@@ -70,7 +70,7 @@ def validacao_mov_dama(linhaI, colunaI, linhaF, colunaF):
 
 #CAVALO
 def validacao_mov_cavalo(linhaI, colunaI, linhaF, colunaF):
-    # Anda 2 casas na vertical e 1 na horizontal
+    #deve andar 2 casas na vertical e 1 na horizontal
     if linhaF == (linhaI + 2) or linhaF == (linhaI - 2):
         if colunaF == (colunaI + 1) or colunaF == (colunaI - 1):
             return True

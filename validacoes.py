@@ -175,32 +175,32 @@ def validacao(peca,linhaI,colunaI,linhaF,colunaF):
                             if validacao_mov_peca(peca,linhaI,colunaI,linhaF,colunaF):
                                 return True
 
-#verifica a cada rodada se o jogo acabou (se há apenas uma peca)
-def isNotOver(tabuleiro):
-    pecas=[]
+#verifica a cada rodada se o jogo acabou (se há apenas um rei)
+def reiVivo(tabuleiro):
+    reis=[]
     count=0
     L = 0
     while L < len(tabuleiro):
         C = 0
         while C < len(tabuleiro[L]):
             peca=tabuleiro[L][C]
-            if peca != " ":
+            #verifica se os dois reis estão em jogo
+            if peca == "r" or peca=="R":
+                reis.append(peca)
                 count+=1
-                #armazena as pecas que ainda estão no jogo
-                pecas.append(peca)
-                #se há mais de uma peca, o jogo ainda não acabou, pode para o loop
-                if count>1:
-                    return True
             C += 1
         L += 1
-    #game over
-    if count==1:
+    #se apenas houver um, acabou o jogo
+    if count<2:
+        #mostra última rodada
+        mostrar_tabuleiro(tabuleiro)
         print("Game Over")
-        #verifica equipe vencedora pela peca que sobrou
-        if eh_branca(pecas[0]):
+        #verifica equipe vencedora pelo rei que sobrou
+        if eh_branca(reis[0]):
             print("Brancas venceram!")
         else:
-            print("Pretas venceram!")
-    return False
+            print("Pretas venceram!") 
+        return False
+    return True
 
 #implementar verificação do xeque matte

@@ -26,10 +26,30 @@ def converter_coluna(coluna):
 
 #linhas para os números corretos dos índices
 def converter_linha(linha):
-    return 8 - int(linha)
+    try:    
+        return 8 - int(linha)
+    except ValueError:
+        letras=["a","b","c","d","e","f","g","h"]
+        for j in range(len(letras)):
+            if linha==letras[j]:
+                print("A linha deve ser um número de 1 a 8")
+                exit()
+
+brancas_capturadas=[]
+pretas_capturadas=[]
+def armazenar_capturadas(capturada,brancas=brancas_capturadas,pretas=pretas_capturadas):
+    if eh_branca(capturada):
+        brancas.append(capturada)
+    else:
+        pretas.append(capturada)
+
+def mostrar_capturadas(capturadas):
+    for i in range(len(capturadas)):
+        print(capturadas[i],end=" ")
+
 
 def mover(linhaIn,colunaIn,linhaFn,colunaFn):
-    #conversão
+        #conversão
         linhaI=converter_linha(linhaIn)
         linhaF=converter_linha(linhaFn)
         colunaI=converter_coluna(colunaIn)
@@ -43,8 +63,14 @@ def mover(linhaIn,colunaIn,linhaFn,colunaFn):
             if validacao(peca,linhaI,colunaI,linhaF,colunaF):
                 #esvazia a posição de origem deixada
                 tabuleiro[linhaI][colunaI]=" "
+                alvo=tabuleiro[linhaF][colunaF]
+                #se houver uma peça na posição destino
+                if alvo!=" ":
+                    #armazena-a
+                    armazenar_capturadas(alvo)
                 #armazena a peca na posição destino
                 tabuleiro[linhaF][colunaF]=peca
                 #sinaliza que moveu
                 return True
         return False
+

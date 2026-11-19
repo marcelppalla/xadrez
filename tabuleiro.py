@@ -18,6 +18,8 @@ def criar_tabuleiro():
     return tabuleiro
 
 def mostrar_tabuleiro(tabuleiro):
+    from mover import brancas_capturadas,pretas_capturadas,mostrar_capturadas
+
     """
     Mostra o tabuleiro com as letras das colunas e os números das linhas.
     """
@@ -32,7 +34,6 @@ def mostrar_tabuleiro(tabuleiro):
 
         print(f" {8 - i}")
         print("  +---+---+---+---+---+---+---+---+")
-
     print("\n    a   b   c   d   e   f   g   h")
 
 def eh_branca(peca):
