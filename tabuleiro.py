@@ -43,3 +43,8 @@ def eh_branca(peca):
         return True
     return False
 
+#variável global
+tabuleiro=criar_tabuleiro()
+
+if __name__ == "__main__":
+    mostrar_tabuleiro(tabuleiro)

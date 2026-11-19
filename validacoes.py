@@ -1,4 +1,4 @@
-from game import tabuleiro
+from tabuleiro import * 
 
 def direcao_peca():
     turno=controlar_turno()
@@ -8,6 +8,12 @@ def direcao_peca():
     #pretas descem
     else:
         return 1
+
+#não ficar na mesma posição
+def sairInercia(linhaI, colunaI, linhaF, colunaF):
+    if linhaI!=linhaF or colunaI!=colunaF:
+        return True
+    return False
 
 #veririca se a posição de origem não está vazia
 def posicao_nao_vazia(linhaI,colunaI):
@@ -70,52 +76,28 @@ def validacao_cor(peca):
             print("Peça inválida, rodada das pretas!")
             return False
 
+# validação específica do movimento de cada peça
 def validacao_mov_peca(peca, linhaI, colunaI, linhaF, colunaF):
-    from peao_ import validacao_mov_peao
-    from bispo import validacao_mov_bispo
-    from cavalo import validacao_mov_cavalo
-    from torre import validacao_mov_torre
-    from rei import validacao_mov_rei
-    from dama import validacao_mov_dama
-
     match peca:
         # retorna um boolean
         case "p":
+            from pecas import validacao_mov_peao
             return validacao_mov_peao(linhaI, colunaI, linhaF, colunaF)
         case "b":
+            from pecas import validacao_mov_bispo
             return validacao_mov_bispo(linhaI, colunaI, linhaF, colunaF)
         case "c":
+            from pecas import validacao_mov_cavalo
             return validacao_mov_cavalo(linhaI, colunaI, linhaF, colunaF)
         case "t":
+            from pecas import validacao_mov_torre
             return validacao_mov_torre(linhaI, colunaI, linhaF, colunaF)
         case "r":
+            from pecas import validacao_mov_rei
             return validacao_mov_rei(linhaI, colunaI, linhaF, colunaF)
         case "d":
+            from pecas import validacao_mov_dama
             return validacao_mov_dama(linhaI, colunaI, linhaF, colunaF)
-
-
-def validacao_captura_peca(peca, linhaI, colunaI, linhaF, colunaF):
-    from peao_ import validacao_captura_peao
-    from bispo import validacao_captura_bispo
-    from cavalo import validacao_captura_cavalo
-    from torre import validacao_captura_torre
-    from rei import validacao_captura_rei
-    from dama import validacao_captura_dama
-
-    match peca:
-        # retorna um boolean
-        case "p":
-            return validacao_captura_peao(linhaI, colunaI, linhaF, colunaF)
-        case "b":
-            return validacao_captura_bispo(linhaI, colunaI, linhaF, colunaF)
-        case "c":
-            return validacao_captura_cavalo(linhaI, colunaI, linhaF, colunaF)
-        case "t":
-            return validacao_captura_torre(linhaI, colunaI, linhaF, colunaF)
-        case "r":
-            return validacao_captura_rei(linhaI, colunaI, linhaF, colunaF)
-        case "d":
-            return validacao_captura_dama(linhaI, colunaI, linhaF, colunaF)
 
 def cores_diferentes(atacante,adversaria):
     cor_atacante=eh_branca(atacante)
@@ -163,36 +145,38 @@ def caminho_livre(peca,linhaI,colunaI,linhaF,colunaF):
 #linhaF: linha final
 #colunaI: coluna inicial
 #colunaF: coluna final
-def validacao(peca,linhaI,colunaI,linhaF,colunaF):
-    #se os parâmetros iniciais forem válidos (dentro dos limites do tabuleiro)
-    if posicao_valida(linhaI,colunaI):    
-        #se os parâmetros finais forem válidos
-        if posicao_valida(linhaF,colunaF):
-            #se a pos de origem não estiver vazia
-            if posicao_nao_vazia(linhaI,colunaI):
+def validacao(peca,linhaI,colunaI,linhaF,colunaF):   
+    #se os parâmetros finais forem válidos
+    if posicao_valida(linhaF,colunaF):
+        #se a pos de origem não estiver vazia
+        if posicao_nao_vazia(linhaI,colunaI):
+            #se sair da inercia
+            if sairInercia(linhaI, colunaI, linhaF, colunaF):
                 #se passar pela validação de cor
                 if validacao_cor(peca):
                     peca=peca.lower()
                     pos_origem=tabuleiro[linhaI][colunaI]
                     pos_destino=tabuleiro[linhaF][colunaF]
-                    #se houver uma peça na pos destino      
-                    if pos_destino!=" ":       
-                        atacante=pos_origem
-                        adversaria=pos_destino
-                        #se forem de cores diferentes
-                        if cores_diferentes(atacante,adversaria):
-                            #validacao de captura de cada peca
-                            if validacao_captura_peca(peca,linhaI,colunaI,linhaF,colunaF):
-                                return True
-                    else:
-                        #se o caminho estiver livre para avançar
-                        if caminho_livre(peca,linhaI,colunaI,linhaF,colunaF):
+                    #se o caminho estiver livre para avançar
+                    if caminho_livre(peca,linhaI,colunaI,linhaF,colunaF):
+                        #se houver uma peça na pos destino
+                        if pos_destino!=" ":
+                            #se forem de cores diferentes
+                            if cores_diferentes(pos_origem,pos_destino):
+                                #se peça for o peao
+                                if peca=="p":    
+                                    #peao possui validação específica de captura
+                                    from pecas import validacao_captura_peao
+                                    if validacao_captura_peao(peca,linhaI,colunaI,linhaF,colunaF):
+                                        return True
+                        #se não houver nenhuma peça no destino
+                        else:
                             #validacao especifica de cada peca
                             if validacao_mov_peca(peca,linhaI,colunaI,linhaF,colunaF):
                                 return True
 
 #verifica a cada rodada se o jogo acabou (se há apenas uma peca)
-def verificaSeAcabou(tabuleiro):
+def isNotOver(tabuleiro):
     pecas=[]
     count=0
     L = 0
@@ -205,22 +189,18 @@ def verificaSeAcabou(tabuleiro):
                 #armazena as pecas que ainda estão no jogo
                 pecas.append(peca)
                 #se há mais de uma peca, o jogo ainda não acabou, pode para o loop
-                if count>2:
-                    break
+                if count>1:
+                    return True
             C += 1
         L += 1
     #game over
     if count==1:
         print("Game Over")
-        isNotOver=False
-    #verifica equipe vencedora pela peca que sobrou
-    if eh_branca(pecas[0]):
-        print("Brancas venceram!")
-    else:
-        print("Brancas venceram!")
+        #verifica equipe vencedora pela peca que sobrou
+        if eh_branca(pecas[0]):
+            print("Brancas venceram!")
+        else:
+            print("Pretas venceram!")
+    return False
 
 #implementar verificação do xeque matte
-                
-
-        
-
