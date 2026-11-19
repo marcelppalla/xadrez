@@ -4,10 +4,16 @@ def direcao_peca():
     turno=controlar_turno()
     #brancas sobem
     if turno=="Brancas jogam":
-        return 1
+        return -1
     #pretas descem
     else:
-        return -1
+        return 1
+
+#veririca se a posição de origem não está vazia
+def posicao_nao_vazia(linhaI,colunaI):
+    if tabuleiro[linhaI][colunaI]!=" ":
+        return True
+    return False
 
 def posicao_valida(linha, coluna):
     """
@@ -162,26 +168,28 @@ def validacao(peca,linhaI,colunaI,linhaF,colunaF):
     if posicao_valida(linhaI,colunaI):    
         #se os parâmetros finais forem válidos
         if posicao_valida(linhaF,colunaF):
-            #se passar pela validação de cor
-            if validacao_cor(peca):
-                peca=peca.lower()
-                pos_origem=tabuleiro[linhaI][colunaI]
-                pos_destino=tabuleiro[linhaF][colunaF]
-                #se houver uma peça na pos destino      
-                if pos_destino!=" ":       
-                    atacante=pos_origem
-                    adversaria=pos_destino
-                    #se forem de cores diferentes
-                    if cores_diferentes(atacante,adversaria):
-                        #validacao de captura de cada peca
-                        if validacao_captura_peca(peca,linhaI,colunaI,linhaF,colunaF):
-                            return True
-                else:
-                    #se o caminho estiver livre para avançar
-                    if caminho_livre(peca,linhaI,colunaI,linhaF,colunaF):
-                        #validacao especifica de cada peca
-                        if validacao_mov_peca(peca,linhaI,colunaI,linhaF,colunaF):
-                            return True
+            #se a pos de origem não estiver vazia
+            if posicao_nao_vazia(linhaI,colunaI):
+                #se passar pela validação de cor
+                if validacao_cor(peca):
+                    peca=peca.lower()
+                    pos_origem=tabuleiro[linhaI][colunaI]
+                    pos_destino=tabuleiro[linhaF][colunaF]
+                    #se houver uma peça na pos destino      
+                    if pos_destino!=" ":       
+                        atacante=pos_origem
+                        adversaria=pos_destino
+                        #se forem de cores diferentes
+                        if cores_diferentes(atacante,adversaria):
+                            #validacao de captura de cada peca
+                            if validacao_captura_peca(peca,linhaI,colunaI,linhaF,colunaF):
+                                return True
+                    else:
+                        #se o caminho estiver livre para avançar
+                        if caminho_livre(peca,linhaI,colunaI,linhaF,colunaF):
+                            #validacao especifica de cada peca
+                            if validacao_mov_peca(peca,linhaI,colunaI,linhaF,colunaF):
+                                return True
 
 #verifica a cada rodada se o jogo acabou (se há apenas uma peca)
 def verificaSeAcabou(tabuleiro):
