@@ -1,4 +1,4 @@
-from tabuleiro import tabuleiro
+from game import tabuleiro
 
 def direcao_peca():
     turno=controlar_turno()
