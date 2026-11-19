@@ -22,8 +22,9 @@ rodada_atual=1
 
 #incrementa a rodada
 def trocar_turno():
-  rodada_atual+=1
-  return rodada_atual
+    global rodada_atual
+    rodada_atual+=1
+    return rodada_atual
 
 def controlar_turno():
     #se a rodada for par, será a vez das pretas
@@ -134,14 +135,14 @@ def caminho_livre(peca,linhaI,colunaI,linhaF,colunaF):
     dir_passo_coluna=0
      #se a peca esta indo para a direita
     if colunaI<colunaF:
-        dir_passo_col=-1
+        dir_passo_coluna=1
     #se a peca esta indo para a esquerda
     elif colunaI>colunaF:
-        dir_passo_col=1
+        dir_passo_coluna=-1
 
     #começa a analisar a partir da próxima posição
     lin_atual=linhaI+dir_passo_linha
-    col_atual=colunaI+dir_passo_col
+    col_atual=colunaI+dir_passo_coluna
     #percorre o caminho da peca ate o destino
     while (lin_atual!=linhaF) or (col_atual!=colunaF):
         #se o caminho não estiver livre retorna False

@@ -10,13 +10,13 @@ while isNotOver:
     mostrar_tabuleiro(tabuleiro)
     controlar_turno()
 
-    i=int(input("Posição da peça a mover (linha,coluna): ").split(","))
-    f=int(input("Posição de destino (linha,coluna): ").split(","))
+    i=input("Posição da peça a mover (linha,coluna): ").split(",")
+    f=input("Posição de destino (linha,coluna): ").split(",")
 
-    linhaI=i[0]
-    colunaI=i[1]
-    linhaF=f[0]
-    colunaF=f[1]
+    linhaI=int(i[0])
+    colunaI=int(i[1])
+    linhaF=int(f[0])
+    colunaF=int(f[1])
 
     peca=tabuleiro[linhaI][colunaI]
 
