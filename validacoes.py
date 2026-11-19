@@ -77,11 +77,14 @@ def validacao_cor(peca):
             return False
 
 # validação específica do movimento de cada peça
-def validacao_mov_peca(peca, linhaI, colunaI, linhaF, colunaF):
+def validacao_mov_peca(peca, linhaI, colunaI, linhaF, colunaF,captura=False):
     match peca:
         # retorna um boolean
         case "p":
-            from pecas import validacao_mov_peao
+            from pecas import validacao_mov_peao,validacao_captura_peao
+            #peao possui validação específica de captura
+            if captura:
+                return validacao_captura_peao(linhaI,colunaI,linhaF,colunaF)
             return validacao_mov_peao(linhaI, colunaI, linhaF, colunaF)
         case "b":
             from pecas import validacao_mov_bispo
@@ -163,11 +166,8 @@ def validacao(peca,linhaI,colunaI,linhaF,colunaF):
                         if pos_destino!=" ":
                             #se forem de cores diferentes
                             if cores_diferentes(pos_origem,pos_destino):
-                                #se peça for o peao
-                                if peca=="p":    
-                                    #peao possui validação específica de captura
-                                    from pecas import validacao_captura_peao
-                                    if validacao_captura_peao(peca,linhaI,colunaI,linhaF,colunaF):
+                                #chama a função com captura=True
+                                if validacao_mov_peca(peca,linhaI,colunaI,linhaF,colunaF,True):
                                         return True
                         #se não houver nenhuma peça no destino
                         else:

@@ -37,7 +37,7 @@ def validacao_mov_torre(linhaI, colunaI, linhaF, colunaF):
     #torre pode andar apenas em linha reta (mesma linha ou mesma coluna)
     if linhaI == linhaF or colunaI == colunaF:
         return True
-    return Falses
+    return False
 
 #BISPO
 def validacao_mov_bispo(linhaI, colunaI, linhaF, colunaF):
