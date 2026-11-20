@@ -8,7 +8,7 @@ def criar_tabuleiro():
     ]
 
     # peças pretas 
-    tabuleiro[0] = ["t", "c", "b", "r", "d", "b", "c", "t"]
+    tabuleiro[0] = ["t", "c", "b", "d", "r", "b", "c", "t"]
     tabuleiro[1] = ["p", "p", "p", "p", "p", "p", "p", "p"]
 
     # peças brancas
